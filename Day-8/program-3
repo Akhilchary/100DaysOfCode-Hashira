@@ -1,0 +1,16 @@
+problem:https://leetcode.com/contest/biweekly-contest-85/problems/minimum-recolors-to-get-k-consecutive-black-blocks/
+class Solution:
+    def minimumRecolors(self, blocks: str, k: int) -> int:
+        n=len(blocks)
+        print(n)
+        if k==n:
+            return blocks.count('W')
+        if k>n: 
+            return blocks.count('W')
+        mx=100000000
+        l=0
+        while l+k<=n:
+            # print(blocks[l:l+k-1])
+            mx=min(mx,blocks[l:l+k].count('W')) 
+            l+=1
+        return mx
