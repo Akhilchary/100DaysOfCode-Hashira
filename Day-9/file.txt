@@ -1,0 +1,89 @@
+program 1:
+https://leetcode.com/contest/weekly-contest-307/problems/largest-palindromic-number/
+
+class Solution {
+public:
+    string largestPalindromic(string num) {
+        unordered_map<char,int> mp;
+        int n=num.size();
+        sort(num.begin(),num.end());
+        string res="";
+        char f='$';
+        for(auto i:num) mp[i]++;
+        // cout<<num<<endl;
+        int z=0;
+        for(int i=n-1;i>=0;i--)
+        {
+            if(mp[num[i]]==1 && f=='$')
+            {
+                f=num[i];
+            }
+            else if(mp[num[i]]>1)
+            {
+                int x=mp[num[i]]/2;
+                while(num[i]!='0' && x-- )
+                {
+                    res+=num[i];
+                }
+                if(num[i]=='0') z=x;
+                if(mp[num[i]]%2==0) mp.erase(num[i]);
+                else mp[num[i]]=1;
+            }
+            // cout<<f<<endl;
+        }
+        if(z>0 && res.size()>0)
+        {
+            while(z--){res+='0';}
+            
+        }
+        
+        cout<<res<<" "<<f<<endl;
+        sort(res.begin(),res.end());
+        reverse(res.begin(),res.end());
+        string s=res;
+        reverse(s.begin(),s.end());
+        string fin;
+        if(f=='$') fin=res+s;
+        else fin=res+f+s;
+        cout<<fin<<" fin "<<endl;
+        if(fin.size()==0 && z>1) return "0";
+        return fin;
+    }
+};
+
+program 2:
+https://leetcode.com/contest/weekly-contest-307/problems/minimum-hours-of-training-to-win-a-competition/
+class Solution {
+public:
+    int minNumberOfHours(int en, int ex, vector<int>& energy, vector<int>& experience) {
+        int cnt=0;
+        cout<<"en cnt i "<<endl;
+        for(auto i:energy)
+        {
+            
+            if(en<=i)
+            {
+                cnt+=i-en+1;
+                en=1;
+                
+            }
+            else{
+                en=en-i;
+            }
+            cout<<en<<" "<<cnt<<" "<<i<<endl;
+        }
+        cout<<cnt<<endl;
+        for(auto i:experience)
+        {
+            if(ex>i)
+            {
+                ex+=i;
+            }
+            else{
+                cnt+=i-ex+1;
+                ex=i+1+i;
+            }
+        }
+        return cnt;
+    }
+};
