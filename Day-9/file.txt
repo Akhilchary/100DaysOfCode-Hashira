@@ -114,3 +114,32 @@ public:
             
     }
 };
+
+program 4:
+https://leetcode.com/problems/fair-distribution-of-cookies/
+
+class Solution {
+public:
+    int mn=1e8;
+    void rec(int i,vector<int> &arr,int k,vector<int> &v,int m)
+    {
+        if(i==arr.size())
+        {
+            mn=min(mn,m);
+            return ;
+        }
+        
+        for(int j=0;j<k;j++)
+        {
+            v[j]+=arr[i];
+            rec(i+1,arr,k,v,max(m,v[j]));
+            v[j]-=arr[i];
+        }
+    }
+    int distributeCookies(vector<int>& arr, int k) {
+        int n=arr.size();
+        vector<int> v(k,0);
+        rec(0,arr,k,v,-1);
+        return mn;
+    }
+};
