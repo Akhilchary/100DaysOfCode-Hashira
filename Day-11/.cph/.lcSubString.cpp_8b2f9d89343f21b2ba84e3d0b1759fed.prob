@@ -1,0 +1,1 @@
+{"name":"Local: lcSubString","url":"d:\\100DaysOfCode-Hashira\\Day-11\\lcSubString.cpp","tests":[{"id":1661281072801,"input":"aabg\nabdg","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\100DaysOfCode-Hashira\\Day-11\\lcSubString.cpp","group":"local","local":true}
