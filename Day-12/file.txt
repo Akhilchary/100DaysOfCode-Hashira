@@ -1,0 +1,121 @@
+program 1:
+https://leetcode.com/problems/min-stack/
+
+class MinStack {
+public:
+    stack<int> st;
+    map<int,int> mp;
+    MinStack() {
+        
+    }
+    
+    void push(int val) {
+        st.push(val);
+        mp[val]++;
+    }
+    
+    void pop() {
+        int x=st.top();
+        st.pop();
+        mp[x]--;
+        if(mp[x]==0) mp.erase(x);
+    }
+    
+    int top() {
+        return st.top();
+    }
+    
+    int getMin() {
+        // cout<<" he "<<endl;
+        // for(auto it:mp){cout<<it.first<<" "<<it.second<<endl;}
+        int x=mp.begin()->first;
+        return x;
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack* obj = new MinStack();
+ * obj->push(val);
+ * obj->pop();
+ * int param_3 = obj->top();
+ * int param_4 = obj->getMin();
+ */
+
+
+ program 2:
+ https://leetcode.com/problems/stock-price-fluctuation/
+ class StockPrice {
+public:
+    map<int,int> mp;
+    multiset<int> ml;
+    int lt=0;
+    StockPrice() {
+        
+    }
+    void update(int t, int p) {
+        if(mp.find(t)==mp.end())
+        {
+            mp[t]=p;
+            ml.insert(p);
+        }
+        else
+        {
+            //here find will return the pointer to the element being searched
+            //just using the element to erase ,will erase all the occurences of the 
+            //element
+            ml.erase(ml.find(mp[t]));
+            mp[t]=p;
+            ml.insert(p);
+        }
+        
+    }
+    
+    int current() {
+        return mp.rbegin()->second;
+    }
+    
+    int maximum() {
+        return *ml.rbegin();
+    }
+    
+    int minimum() {
+        return *ml.begin();
+    }
+};
+
+/**
+ * Your StockPrice object will be instantiated and called as such:
+ * StockPrice* obj = new StockPrice();
+ * obj->update(timestamp,price);
+ * int param_2 = obj->current();
+ * int param_3 = obj->maximum();
+ * int param_4 = obj->minimum();
+ */
+
+ program 3:
+ https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/
+ class Solution {
+public:
+    int minInsertions(string s1) {
+        int n=s1.size();
+        string s2=s1;
+        reverse(s2.begin(),s2.end());
+        vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=n;j++)
+            {
+                if(s1[i-1]==s2[j-1])
+                {
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else
+                {
+                    dp[i][j]=max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        return n-dp[n][n];
+    }
+};
