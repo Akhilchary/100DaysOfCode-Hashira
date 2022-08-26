@@ -42,3 +42,65 @@ public:
     }
 };
 
+program 2:
+https://leetcode.com/problems/spiral-matrix/
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& mat) {
+        int m=mat.size(),n=mat[0].size();
+        int k=0,l=0;
+        vector<int> v;
+        while(l<n && k<m)
+        {
+            for(int i=l;i<n;i++)
+            {
+                v.push_back(mat[k][i]);
+            }
+            k++;
+            for(int i=k;i<m;i++)
+            {
+                v.push_back(mat[i][n-1]);
+            }
+            n--;
+            if(k<m)
+            {
+                for(int i=n-1;i>=l;i--)
+                {
+                    v.push_back(mat[m-1][i]);
+                }
+                m--;
+            }
+            if(l<n)
+            {
+                for(int i=m-1;i>=k;i--)
+                {
+                    v.push_back(mat[i][l]);
+                }
+                l++;
+            }
+        }
+        return v;
+    }
+};
+
+program 3:
+https://leetcode.com/problems/reordered-power-of-2/
+class Solution {
+public:
+    bool reorderedPowerOf2(int n) {
+        unordered_map<string,int> mp;
+        for(int i=0;i<=30;i++)
+        {
+            string y=to_string((int)pow(2,i));
+            // cout<<y<<endl;
+            sort(y.begin(),y.end());
+            
+            mp[y]++;
+        }
+        string s=to_string(n);
+        sort(s.begin(),s.end());
+        // cout<<mp[s]<<" "<<s<<endl;
+        if(mp.find(s)!=mp.end()) return true;
+        return false;
+    }
+};
