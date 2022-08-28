@@ -1,0 +1,142 @@
+program 1:
+https://leetcode.com/contest/weekly-contest-308/problems/removing-stars-from-a-string/
+class Solution {
+public:
+    string removeStars(string s) {
+        int n=s.size();
+        vector<char> v;
+        int cnt=0;
+        for(int i=n-1;i>=0;i--)
+        {
+            if(cnt==0 && s[i]!='*')
+            {
+                v.push_back(s[i]);
+            }
+            else if(s[i]=='*') cnt++;
+            else if(cnt>0 && s[i]!='*')
+            {
+                cnt--;
+            }
+        }
+        string res="";
+        // for(auto i:v ) cout<<i<<" ";
+        for(int i=v.size()-1;i>=0;i--)
+        {
+            res+=v[i];
+        }
+        return res;
+        
+    }
+};
+
+program 2:
+https://leetcode.com/contest/weekly-contest-308/problems/longest-subsequence-with-limited-sum/
+class Solution {
+public:
+    int rec(int i,int tar,vector<int> nums,vector<vector<int>> &dp)
+    {
+        // if(tar==0) return 1;
+        // cout<<i<<" "<<tar<<endl;
+        if(i==0) 
+        {
+            if(nums[i]<=tar) return 1;
+            return 0;
+        }
+        if(dp[i][tar]!=-1) return dp[i][tar];
+        
+        //pick and notpick
+        int pick=-1e5;
+        if(tar>=nums[i]) pick=1+rec(i-1,tar-nums[i],nums,dp);
+        int npick=rec(i-1,tar,nums,dp);
+        return dp[i][tar]= max(pick,npick);
+    }
+    vector<int> answerQueries(vector<int>& nums, vector<int>& q) {
+        int n=nums.size();
+        int m=q.size();
+        sort(nums.begin(),nums.end());
+        vector<int> v;
+        for(int i=0;i<m;i++)
+        {
+            int cnt=0,val=0;
+            for(int j=0;j<n;j++)
+            {
+                if(val+nums[j]<=q[i])
+                {
+                    val+=nums[j];cnt++;
+                }
+            }
+            v.push_back(cnt);
+        }
+        return v;
+    }
+    
+};
+
+program 3:
+https://leetcode.com/problems/edit-distance/
+class Solution {
+public:
+    int rec(int i,int j,string s1,string s2,vector<vector<int>> &dp)
+    {
+        if(i<0) return j+1;
+        if(j<0) return i+1;
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(s1[i]==s2[j])
+        {
+            return dp[i][j]= rec(i-1,j-1,s1,s2,dp);
+        }
+       
+     
+        return dp[i][j]= 1+min(rec(i-1,j,s1,s2,dp),min(rec(i,j-1,s1,s2,dp),rec(i-1,j-1,s1,s2,dp)));
+
+    }
+    int minDistance(string s1, string s2) {
+        int n=s1.size(),m=s2.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        return rec(n-1,m-1,s1,s2,dp);
+    }
+};
+
+program 4:
+https://leetcode.com/problems/sort-the-matrix-diagonally/
+class Solution {
+public:
+    vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
+        int n=mat.size(),m=mat[0].size();
+        for(int i=m-2;i>=0;i--)
+        {
+            int x=0,y=i;
+            vector<int> v;
+            while(x<n and y<m)
+            {
+                v.push_back(mat[x][y]);x++;y++;
+            }
+            sort(v.begin(),v.end());
+            // cout<<v.size()<<endl;
+            x=0;y=i;int l=0;
+            while(x<n and y<m && l<v.size())
+            {
+                mat[x][y]=v[l];l++;x++;y++;
+            }
+        }
+        
+        for(int i=1;i<n;i++)
+        {
+            int x=i,y=0;
+            vector<int> v;
+            while(x<n and y<m)
+            {
+                v.push_back(mat[x][y]);x++;y++;
+            }
+            sort(v.begin(),v.end());
+            x=i;y=0;int l=0;
+            while(x<n and y<m and l<v.size())
+            {
+                mat[x][y]=v[l];l++;x++;y++;
+            }
+        }
+        
+        
+        return mat;
+    }
+};
