@@ -1,0 +1,101 @@
+program 1:
+https://leetcode.com/problems/find-the-student-that-will-replace-the-chalk/
+class Solution {
+public:
+    int lowerBound(int l,int r,vector<long long> &pre,int k)
+    {
+        int lb=0;
+        while(l<=r)
+        {
+            int mid=l+(r-l)/2;
+            if(pre[mid]==k)
+            {
+                return mid;
+            }
+            else if(pre[mid]<k)
+            {
+                lb=mid;
+                l=mid+1;
+            }
+            else
+            {
+                r=mid-1;
+            }
+        }
+        return lb;
+    }
+    int chalkReplacer(vector<int>& chalk, int k) {
+        long long sm=0;
+        int n=chalk.size();
+        vector<long long> pre(n,0);
+        for(auto i=0;i<n;i++){ sm+=chalk[i];pre[i]=sm;}
+        k=k%sm;
+        int i=0;
+        int lb=0;
+        lb=lowerBound(0,pre.size()-1,pre,k);
+        if(k>chalk[lb]) return lb+1;
+        k-=pre[lb];
+        return lb;
+    }
+};
+
+program 2;
+https://leetcode.com/problems/find-k-closest-elements/
+class Solution {
+public:
+    int bs(vector<int>&arr,int n,int k)
+    {
+        int l=0,r=n-1,lb=0;
+        while(l<r)
+        {
+            int mid=l+(r-l)/2;
+            if(arr[mid]==k)
+            {
+                return mid;
+            }
+            else if(arr[mid]>k)
+            {
+                r=mid-1;
+            }
+            else{ l=mid+1;lb=mid;}
+        }
+        return lb;
+    }
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        int n=arr.size();
+        int idx=bs(arr,n,x);
+        cout<<idx<<endl;
+        int p1=idx,p2=idx+1;
+        vector<int> res;
+        while(p1>=0 && p2<n && k>0)
+        {
+            if(abs(arr[p1]-x)<abs(arr[p2]-x))
+            {
+                res.push_back(arr[p1]);p1--;
+            }
+            else if(abs(arr[p1]-x)>abs(arr[p2]-x))
+            {
+                res.push_back(arr[p2]);p2++;
+            }
+            else
+            {
+                if(arr[p1]<arr[p2]){ res.push_back(arr[p1]);p1--;}
+                else {res.push_back(arr[p2]);p2++;}
+            }
+            k--;
+        }
+        if(k>0)
+        {
+            while(p1>=0 && k>0)
+            {
+                res.push_back(arr[p1]);p1--;k--;
+            }
+            while(p2<n && k>0)
+            {
+                res.push_back(arr[p2]);p2++;k--;
+            }
+        }
+        sort(res.begin(),res.end());
+        return res;
+    }
+};
