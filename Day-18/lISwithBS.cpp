@@ -1,24 +1,41 @@
-#include<bits/stdc++.h>
-using namespace  std;
-int main()
+#include <bits/stdc++.h>
+using namespace std;
+          //function minimumGroups to calculate minimum number of Groups 
+int minimumGroups(int awards[],int n,int k)
 {
-    //lis with binary search
-    vector<int> nums={5,4,11,1,16,8};
-    int n=nums.size();
-    vector<int> tmp;
-    tmp.push_back(nums[0]);
-    for(int i=1;i<n;i++)
-    {
-        if(nums[i]>tmp.back())
-        {
-            tmp.push_back(nums[i]);
+    sort(awards,awards+n);
+    int i=1;     
+    int group_count=1;   
+    int min_element=awards[0];
+    while(i<n)
+    {      
+        if(awards[i]-min_element<=k)
+        { 
+            i++;         
         }
-        else{
-            int ind=lower_bound(tmp.begin(),tmp.end(),nums[i])-tmp.begin();
-            tmp[ind]=nums[i];
-        }
+        else
+        {             
+            group_count++;            
+            min_element=awards[i];            
+            i++;         
+        }     
     }
-    cout<<tmp.size()<<endl;
-
+    return group_count; 
+}  
+int main() 
+{        
+cout<<"Enter the size of awards array : ";
+int size;
+cin>>size;
+int awards[size];          
+cout<<"\nEnter the elements of awards array : ";
+for(int i=0;i<size;i++)
+{        
+ cin>>awards[i];    
+ }
+int k;     
+cout<<"\nEnter the value of k : ";     
+cin>>k;
+cout<<"\nMinumum number of groups will be "<<minimumGroups(awards,size,k);     
+return 0; 
 }
-
