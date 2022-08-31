@@ -1,0 +1,233 @@
+program 1:
+https://leetcode.com/problems/minimum-limit-of-balls-in-a-bag/
+class Solution {
+public:
+    bool ispos(vector<int> &nums,int pen,int k)
+    {
+        int cnt=0;
+        for(auto i:nums)
+        {
+            if(i>pen)
+            {
+                int x=i/pen;
+                if(i%pen==0) x--;
+                cnt+=x;
+            }
+        }
+        return cnt<=k;
+    }
+    int minimumSize(vector<int>& nums, int k) {
+        int n=nums.size();
+        int mx=-1;
+        for(auto i:nums) mx=max(mx,i);
+        //binary search over min. penality and max penality
+        //here min. penality can be 1 and max penality is mx
+        //so find a min. penality between 1 and max that can be obtained in given
+        // k operations
+        int l=1,r=mx;
+        int lb=0;
+        while(l<=r)
+        {
+            int mid=l+(r-l)/2;
+            // 
+            if(ispos(nums,mid,k))
+            {
+                r=mid-1;
+                lb=mid;
+            }
+            else
+            {
+                l=mid+1;
+            }
+        }
+        return lb;
+    }
+};
+
+
+program 2:
+https://leetcode.com/problems/koko-eating-bananas/
+class Solution {
+public:
+    bool ispos(vector<int> &nums,int sp,int h)
+    {
+        long long cnt=0;
+        for(auto i:nums)
+        {
+            if(i<sp)
+            {
+                cnt++;
+            }
+            else
+            {
+                int x=i/sp;
+                if(i%sp!=0) x++;
+                cnt+=x;
+            }
+        }
+        return cnt<=h;
+    }
+    int minEatingSpeed(vector<int>& piles, int h) {
+        int n=piles.size();
+        int mn=1;
+        int mx=-1e9;
+        for(auto i:piles)
+        {
+            mx=max(mx,i);
+        }
+        int l=mn,r=mx,lb=0;
+        while(l<=r)
+        {
+            long long mid=l+(r-l)/2;
+            if(ispos(piles,mid,h))
+            {
+                r=mid-1;lb=mid;
+            }
+            else
+            {
+                l=mid+1;
+            }
+        }
+        return lb;
+    }
+};
+
+program 3:
+https://leetcode.com/problems/magnetic-force-between-two-balls/
+class Solution {
+public:
+    bool ispos(vector<int> &nums,int mid,int balls)
+    {
+        int prev=0;
+        int j=1;
+        for(int i=1;i<balls;i++)
+        {
+            while(j<nums.size() && nums[prev]+mid>nums[j]) j++;
+            if(j>=nums.size()) return false;
+            prev=j;
+        }
+        return true;
+    }
+    int maxDistance(vector<int>& nums, int m) {
+        int n=nums.size();
+        sort(begin(nums),end(nums));
+        int l=1,r=nums[n-1];
+        int ub=0;
+        while(l<=r)
+        {
+            int mid=l+(r-l)/2;
+            if(ispos(nums,mid,m))
+            {
+                l=mid+1;ub=mid;
+            }
+            else
+            {
+                r=mid-1;
+            }
+        }
+        return ub;
+    }
+};
+
+program 4:
+https://leetcode.com/problems/find-the-duplicate-number/
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int n=nums.size();
+        int l=1,r=n-1;
+        while(l<r)
+        {
+            int mid=l+(r-l)/2;
+            int cnt=0;
+            for(auto i:nums)
+            {
+                if(i<=mid) cnt++;
+            }
+            cout<<cnt<<endl;
+            if(cnt>mid)
+            {
+                r=mid;
+            }
+            else l=mid+1;
+            // cout<<l<<" "<<r<<endl;
+        }
+        return l;
+    }
+};
+
+program 5:
+https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/
+class Solution {
+public:
+    int smallestDivisor(vector<int>& nums, int t) {
+        int n=nums.size();
+        int l=1,r=1e8;
+        int lb=1;
+        while(l<r)
+        {
+            int mid=l+(r-l)/2;
+            int cnt=0;
+            for(auto i:nums)
+            {
+                int x=ceil(i/mid);
+                if(i%mid!=0) x++;
+                cnt+=x;
+            }
+            if(cnt<=t)
+            {
+                lb=mid;
+                r=mid;
+            }
+            else
+            {
+                l=mid+1;
+            }
+        }
+        
+        return lb;
+    }
+};
+
+program 6:
+https://leetcode.com/problems/longest-string-chain/
+class Solution {
+public:
+    bool compare(string &a,string &b)
+    {
+        if(a.size()!=b.size()+1) return false;
+        int l=0,r=0;
+        while(l<a.size())
+        {
+            if(r<b.size() && a[l]==b[r])
+            {
+                l++;r++;
+            }
+            else l++;
+        }
+        if(l==a.size() && b.size()==r) return true;
+        return false;
+    }
+    static bool comp(string &s1,string &s2)
+    {
+        return s1.size()<s2.size();
+    }
+    int longestStrChain(vector<string>& words) {
+        int n=words.size();
+        vector<int> dp(n,1);
+        sort(words.begin(),words.end(),comp);
+        int mx=1;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<i;j++)
+            {
+                if(compare(words[i],words[j]) && 1+dp[j]>dp[i])
+                {
+                    dp[i]=1+dp[j];
+                }
+            }
+            mx=max(mx,dp[i]);
+        }
+        return mx;
+    }
+};
