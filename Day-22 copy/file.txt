@@ -1,0 +1,95 @@
+program 1:
+https://leetcode.com/problems/maximize-the-topmost-element-after-k-moves/
+class Solution {
+public:
+    int maximumTop(vector<int>& nums, int k) {
+        int mx=-1,n=nums.size();
+        if (nums.size() == 1 && k % 2)
+            return -1;
+        if (k < 2)
+            return nums[k];
+        
+        for(int i=0;i<k-1 && i<n;i++)
+        {
+            mx=max(mx,nums[i]);
+        }
+        if(k<n) mx=max(mx,nums[k]);
+        return mx;
+    }
+};
+
+program 2:
+https://leetcode.com/problems/gas-station/
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n=gas.size();
+        int tot=0,sm=0,idx=0;
+        for(int i=0;i<n;i++)
+        {
+            tot+=gas[i]-cost[i];
+            sm+=gas[i]-cost[i];
+            if(sm<0)
+            {
+                sm=0;
+                idx=i+1;
+            }
+        }
+        if(tot<0) return -1;
+        return idx;
+    }
+};
+
+program 3:
+https://leetcode.com/problems/insert-delete-getrandom-o1/
+class RandomizedSet {
+public:
+    unordered_map<int,int> mp;
+    multiset<int> v;
+    RandomizedSet() {
+        
+    }
+    
+    bool insert(int val) {
+        bool x=false;
+        if(mp.find(val)==mp.end())
+        {
+            mp[val]=v.size();
+            v.insert(val);
+            x=true;
+        }
+        return x;
+    }
+    
+    bool remove(int val) {
+        bool x=true;
+        if(mp.find(val)==mp.end())
+        {
+            x=false;
+        }
+        else
+        {
+            v.erase(v.find(val));
+            mp.erase(val);
+        }
+        return x;
+    }
+    
+    int getRandom() {
+     
+        auto x=v.begin();
+        int f=rand()%v.size();
+        while(f--) x++;
+        // return (x+-1);
+        
+        return *x;
+    }
+};
+
+/**
+ * Your RandomizedSet object will be instantiated and called as such:
+ * RandomizedSet* obj = new RandomizedSet();
+ * bool param_1 = obj->insert(val);
+ * bool param_2 = obj->remove(val);
+ * int param_3 = obj->getRandom();
+ */
