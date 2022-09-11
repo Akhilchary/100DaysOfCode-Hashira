@@ -1,0 +1,165 @@
+program 1:
+https://leetcode.com/problems/sum-of-absolute-differences-in-a-sorted-array/
+class Solution {
+public:
+    vector<int> getSumAbsoluteDifferences(vector<int>& nums) {
+        int n=nums.size();
+        
+        //prefix sum array
+        vector<int> pre(n,0);
+        pre[0]=nums[0];
+        vector<int> suf(n,0);
+        suf[n-1]=nums[n-1];
+        int j=n-2;
+        for(int i=1;i<n;i++) 
+        {
+            pre[i]=pre[i-1]+nums[i];
+            suf[j]=suf[j+1]+nums[j];
+            j--;
+        }
+            
+        vector<int> res(n,0);
+        for(int i=1;i<n-1;i++)
+        {
+            int l=(i)*nums[i]-pre[i-1];
+            int r=suf[i+1]-(n-i-1)*nums[i];
+            res[i]=l+r;
+        }
+        res[0]=suf[1]-(n-1)*nums[0];
+        res[n-1]=n*nums[n-1]-pre[n-1];
+        return res;
+        
+    }
+};
+
+program 2:
+https://leetcode.com/problems/minimum-flips-to-make-a-or-b-equal-to-c/
+class Solution {
+public:
+    int minFlips(int a, int b, int c) {
+        int n=0;
+        if(b>a) {int t=a;a=b;b=t;}
+        int cnt=0;
+        n=max(n,max(a,max(b,c)));
+        while(n!=0)
+        {
+            int x,y,z;
+            a&1==1?x=1:x=0;
+            b&1==1?y=1:y=0;
+            c&1==1?z=1:z=0;
+            if((x|y)!=z)
+            {
+                if(z==1)
+                {
+                    if(x==1 || y==1) cnt++;
+                    else cnt+=1;
+                }
+                else
+                {
+                    if(x==1 && y==1) cnt+=2;
+                    else cnt+=1;
+                }
+            }
+            a=a>>1;b=b>>1;c=c>>1;
+            n=n>>1;
+        }
+        return cnt;
+    }
+};
+
+program 3:
+https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        int n=nums.size();
+        int l=0,r=0;
+        int p=0,mx=-1;
+        while(r<n)
+        {   
+            if(nums[r]==0 && p==0)
+            {
+                p=1;r++; mx=max(mx,r-l);
+            }
+            else if(nums[r]==1)
+            {
+                r++;mx=max(mx,r-l);
+            }
+            else
+            {
+                while(p==1 && l<n)
+                {
+                    if(nums[l]==0) p=0;
+                    l++;
+                }
+                mx=max(mx,r-l+1);
+            }
+        }
+        
+        return mx-1;
+    }
+};
+
+program 4:
+https://leetcode.com/contest/weekly-contest-310/problems/optimal-partition-of-string/
+class Solution {
+public:
+    int partitionString(string s) {
+        int n=s.size();
+        unordered_map<string,int> mp;
+        unordered_map<char,int> a;
+        string st="";
+        int cnt=0;
+        for(int i=0;i<n;i++)
+        {
+            if(a.find(s[i])==a.end())
+            {
+                a[s[i]]=1;st+=s[i];
+                
+            }
+            else
+            {
+                mp[st]++;
+                cnt++;
+                st=s[i];
+                a.clear();
+                a[s[i]]=1;
+            }
+            // cout<<st<<endl;
+        }
+        if(st!="") cnt++;
+        return cnt;
+    }
+};
+
+program 5:
+https://leetcode.com/contest/weekly-contest-310/problems/most-frequent-even-element/
+class Solution {
+public:
+    int mostFrequentEven(vector<int>& nums) {
+        map<int,int> mp;
+        for(auto i:nums)
+        {
+            if(i%2==0)
+            {
+                mp[i]++;
+            }
+        }
+        int val=-1,f=0;
+        for(auto i:mp)
+        {
+            int x=i.first,y=i.second;
+            if(f<y)
+            {
+                val=x;f=y;
+            }
+            else if(f==y)
+            {
+                val=min(val,x);
+            }
+        }
+        return val;
+    }
+};
+
+
