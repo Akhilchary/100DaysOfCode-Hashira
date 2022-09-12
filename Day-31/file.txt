@@ -1,0 +1,102 @@
+program 1:
+https://leetcode.com/problems/check-if-word-is-valid-after-substitutions/
+class Solution {
+public:
+    bool isValid(string s) {
+        int n=s.size();
+        stack<char> st;
+        for(auto i:s)
+        {
+            if(i=='a')
+            {
+                st.push(i);
+            }
+            else if(i=='b')
+            {
+                if(st.size()==0 || st.top()=='b') return false;
+                else st.push(i);
+            }
+            else
+            {
+                if(st.size()==0 || st.top()!='b') return false;
+                st.pop();
+                if(st.size()==0 || st.top()!='a') return false;
+                st.pop();
+            }
+        }
+        if(st.size()==0) return true;
+        return false;
+    }
+};
+
+program 2:
+https://leetcode.com/problems/evaluate-the-bracket-pairs-of-a-string/
+class Solution {
+public:
+    string evaluate(string s, vector<vector<string>>& k) {
+        unordered_map<string,string> mp;
+        for(auto i:k)
+        {
+            mp[i[0]]=i[1];
+        }
+        int n=s.size();
+        string res="";
+        for(int i=0;i<n;i++)
+        {
+            if(s[i]=='(')
+            {
+                string x="";
+                i++;
+                while(s[i]!=')')
+                {
+                    x+=s[i];i++;
+                }
+                if(mp.find(x)!=mp.end() && mp[x]!="")
+                {
+                    res+=mp[x];
+                }else res+='?';
+            }
+            else
+            {
+                res+=s[i];
+            }
+        }
+        return res;
+    }
+};
+
+program 3:
+https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/
+class Solution:
+    def strStr(self, st: str, s: str) -> int:
+        return st.find(s);
+
+program 4:
+https://leetcode.com/problems/bag-of-tokens/
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& nums, int p) {
+        int n=nums.size();
+        int l=0,r=n-1;
+        int s=0;
+        int mx=0,i=0;
+        sort(nums.begin(),nums.end());
+        while(i<nums.size())
+        {
+            if(p>=nums[i])
+            {
+                p-=nums[i];
+                s++;i++;
+            }
+            else if(s>0)
+            {
+                s--;p+=nums.back();nums.pop_back();
+            }
+            else break;
+            mx=max(mx,s);
+        }
+        return mx;
+        
+    }
+};
+
