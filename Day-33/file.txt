@@ -1,0 +1,105 @@
+program 1:
+https://leetcode.com/problems/pseudo-palindromic-paths-in-a-binary-tree/
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    int cnt=0;
+    void printv(vector<int> &v) {for(auto i:v) cout<<i<<" ";cout<<endl;}
+    void palin(vector<int> &v)
+    {
+        int c=0;
+        // printv(v);
+        for(auto i:v)
+        {   //cout<<i<<endl;
+            if(i%2==1) c++;
+            if(c>1) break;
+        }
+        if(c<=1) cnt++;
+        return ;
+    }
+    void dfs(TreeNode* root,vector<int> v)
+    {
+        if(root==NULL) return ;
+        if(root->left==NULL && root->right==NULL)
+        {
+            v[root->val]++;
+            palin(v);
+        }
+        
+        v[root->val]++;
+        dfs(root->left,v);
+        dfs(root->right,v);
+        
+    }
+    int pseudoPalindromicPaths (TreeNode* root) {
+        vector<int> v(10,0);
+        dfs(root,v);
+        return cnt;
+    }
+};
+
+program 2:
+https://leetcode.com/problems/subarray-product-less-than-k/
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        int l=0,r=0,cnt=0;
+        int ml=1;
+        int n=nums.size();
+        while(r<n && l<n)
+        {
+            ml*=nums[r];
+            // if(nums[r]<k) cnt++;
+            if(ml<k)
+            {
+                int x=r-l+1;
+                cnt+=x;
+            }
+            else
+            {
+                while(l<n && ml>=k)
+                {
+                    ml=ml/nums[l];l++;
+                }
+                int x=r-l+1;
+                if(cnt>0) cnt+=x;
+            }
+            r++;
+        }
+        return cnt;
+    }
+};
+
+program 3:
+https://leetcode.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target/
+class Solution {
+public:
+    int maxNonOverlapping(vector<int>& nums, int t) {
+        int n=nums.size();
+        unordered_map<int,int> mp;
+        int sm=0,cnt=0;
+        mp[0]=1;
+        for(auto i=0;i<n;i++)
+        {
+            sm+=nums[i];
+            if(mp.find(sm-t)!=mp.end())
+            {
+                mp.clear();sm=0;mp[0]=1;
+                cnt++;
+            }
+            else mp[sm]++;
+        }
+        return cnt;
+    }
+};
+

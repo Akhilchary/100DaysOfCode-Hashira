@@ -11,6 +11,6 @@ const age=[12,34,35,46,65]
 // }
 
 // or
-module.exports={
-    names:l,ages:age
-}
+// module.exports={
+//     names:l,ages:age
+// }
