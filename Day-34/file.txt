@@ -1,0 +1,49 @@
+program 1:
+https://leetcode.com/problems/find-original-array-from-doubled-array/
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& arr) {
+        map<int,int> mp;
+        for(auto i:arr) mp[i]++;
+        vector<int> res;
+        while(mp.size()>0)
+        {
+            auto p=mp.begin();int x=(int)p->first;
+            int y=2*x;
+            if(mp.find(y)!=mp.end())
+            {   
+                mp[y]--;if(mp[y]==0) mp.erase(y);
+                if(mp.find(x)==mp.end()) return {};
+                mp[x]--;if(mp[x]==0) mp.erase(x);
+                
+                res.push_back(x);
+            } else return {};
+        }
+        return res;
+    }
+};
+
+program 2:
+https://leetcode.com/problems/shifting-letters/
+class Solution {
+public:
+    string shiftingLetters(string s, vector<int>& nums) {
+        int n=nums.size();
+        vector<int> suf(n,0);
+        suf[n-1]=nums[n-1]%26;
+        for(int i=n-2;i>=0;i--)
+        {
+            suf[i]=(nums[i]+suf[i+1])%26;
+        }
+        string res="";
+        for(auto i=0;i<n;i++)
+        {
+            int x=int(s[i])+suf[i];
+            if(x>122) x-=26;
+            char c=char(x);
+            res+=(c);
+        }
+        return res;
+    }
+};
+
